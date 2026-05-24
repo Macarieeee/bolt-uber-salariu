@@ -64,6 +64,17 @@ function CalculatorPage({ mode }) {
     const finalSalary =
       afterCommission - totalCash - workContractCost - rentalCost;
 
+    const salaryWithoutRental = finalSalary + rentalCost;
+
+    const taxesBase =
+      rentalCost > 0 ? salaryWithoutRental : finalSalary;
+
+    const cas = taxesBase * 0.25;
+    const cass = taxesBase * 0.1;
+    const incomeTax = (taxesBase - cas - cass) * 0.1;
+
+    const totalTaxes = cas + cass + incomeTax;
+
     setResult({
       finalSalary,
       commission8Percent,
@@ -72,6 +83,8 @@ function CalculatorPage({ mode }) {
       totalNet,
       totalCash,
       rentalCost,
+      salaryWithoutRental,
+      totalTaxes,
     });
   };
 
@@ -248,7 +261,11 @@ function CalculatorPage({ mode }) {
                       value={result.commission8Percent + result.workContractCost}
                       highlight
                     />
-
+                    <DetailRow
+                      label="Taxe aferente"
+                      value={result.totalTaxes}
+                      highlight
+                    />
                     <DetailRow
                       label="Salariu final"
                       value={result.finalSalary}
